@@ -29,7 +29,7 @@ package mandrill
 
 import (
 	"fmt"
-	"github.com/jmcvetta/restclient"
+	"github.com/jmcvetta/napping"
 )
 
 // API key for Mandrill user. You should set this to your API key before calling
@@ -57,20 +57,15 @@ func (err *Error) Error() string {
 
 // do is an easy function for performing requests against Mandrill's API.
 func do(url string, data interface{}, result interface{}) error {
-	err := newError()
+	
+	url = "https://mandrillapp.com/api/1.0" + url
 
-	rr := &restclient.RequestResponse{
-		Url:    "https://mandrillapp.com/api/1.0" + url,
-		Method: "POST",
-		Data:   data,
-		Result: result,
-		Error:  err}
-
-	status, _ := restclient.Do(rr)
-	if status == 200 {
+	resp, err := napping.Post(url, &data, &result)
+	if resp.Status() == 200 {
 		return nil
 	}
-	fmt.Println(status, rr.RawText)
+
+	fmt.Println(err)
 	return err
 }
 
