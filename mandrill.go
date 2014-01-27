@@ -60,7 +60,7 @@ func do(url string, data interface{}, result interface{}) error {
 	
 	url = "https://mandrillapp.com/api/1.0" + url
 
-	resp, err := napping.Post(url, &data, &result)
+	resp, err := napping.Post(url, &data, &result, nil)
 	if resp.Status() == 200 {
 		return nil
 	}
